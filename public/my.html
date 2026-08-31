@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>내 LOVE 현황 — NEPAL 48 LOVE CHALLENGE</title>
+<meta name="robots" content="noindex" />
+<link rel="stylesheet" href="/assets/css/style.css" />
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>❤️</text></svg>" />
+</head>
+<body>
+
+<header class="site-header">
+  <div class="wrap">
+    <a class="brand" href="/"><span class="mark">48</span><span class="name">NEPAL <span>48</span> LOVE</span></a>
+    <nav class="nav">
+      <a href="/">캠페인 소개</a>
+      <a href="/dashboard.html">투명성 대시보드</a>
+    </nav>
+  </div>
+</header>
+
+<section>
+  <div class="wrap narrow">
+    <div class="roman">MY LOVE</div>
+    <h2 class="mb-16">내 LOVE 현황</h2>
+
+    <!-- 조회 폼 -->
+    <div class="card pad-lg" id="lookup-card">
+      <p class="small muted">참여 신청 시 받으신 <strong>추천코드</strong>와 <strong>휴대전화 뒤 4자리</strong>를 입력해 주세요.</p>
+      <form id="lookup-form" novalidate>
+        <div class="grid g2">
+          <div class="field mb-0">
+            <label for="q-code">추천코드</label>
+            <input type="text" id="q-code" maxlength="8" placeholder="L4K9QX" style="text-transform:uppercase" />
+          </div>
+          <div class="field mb-0">
+            <label for="q-last4">휴대전화 뒤 4자리</label>
+            <input type="text" id="q-last4" maxlength="4" inputmode="numeric" placeholder="1234" />
+          </div>
+        </div>
+        <button type="submit" class="btn btn-primary mt-16">조회하기</button>
+        <p id="q-result" class="small mt-16 mb-0"></p>
+      </form>
+    </div>
+
+    <!-- 결과 -->
+    <div id="status-view" class="hidden">
+      <div class="card pad-lg" style="background:linear-gradient(150deg,var(--love-soft),var(--surface))">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:16px;flex-wrap:wrap">
+          <div>
+            <div class="eyebrow" id="v-stage">LOVE START</div>
+            <h3 id="v-name" style="font-size:26px">—</h3>
+            <p class="small muted mb-0" id="v-status">—</p>
+          </div>
+          <div class="center">
+            <div class="xsmall" style="letter-spacing:.1em;font-weight:800;color:var(--ink-500)">MY CODE</div>
+            <div style="font-size:28px;font-weight:800;letter-spacing:.06em" id="v-code">——————</div>
+          </div>
+        </div>
+
+        <div class="mt-24">
+          <div style="display:flex;justify-content:space-between;font-size:13px;font-weight:700;margin-bottom:8px">
+            <span id="v-progress-label">연결한 사람 0명</span>
+            <span class="muted" id="v-progress-target">다음 단계: LOVE 4</span>
+          </div>
+          <div class="progress"><i id="v-progress" style="width:0%"></i></div>
+        </div>
+      </div>
+
+      <div class="grid g3 mt-24">
+        <div class="stat"><div class="k">입금 확인된 연결</div><div class="v love" id="v-paid">0<span class="u">명</span></div></div>
+        <div class="stat"><div class="k">입금 대기중 연결</div><div class="v" id="v-pending">0<span class="u">명</span></div></div>
+        <div class="stat"><div class="k">LOVE IMPACT</div><div class="v hope" id="v-impact">0<span class="u">원</span></div></div>
+      </div>
+      <p class="xsmall mt-8">
+        LOVE IMPACT는 내가 연결한 참여자들이 만든 네팔 구호재원입니다.
+        캠페인 총 모금액과 중복 합산하지 않는 <strong>Impact Attribution 지표</strong>입니다.
+      </p>
+
+      <div class="card pad-lg mt-24">
+        <h3 style="font-size:17px">나의 초대 링크</h3>
+        <div class="field mt-8 mb-0">
+          <input type="text" id="v-link" readonly />
+        </div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:12px">
+          <button class="btn btn-dark" id="v-copy" style="padding:10px 18px;font-size:14px">링크 복사</button>
+          <button class="btn btn-ghost" id="v-share" style="padding:10px 18px;font-size:14px">공유하기</button>
+        </div>
+        <p id="v-copy-msg" class="small mt-16 mb-0"></p>
+      </div>
+
+      <h3 class="mt-32 mb-16" style="font-size:17px">내가 연결한 사람들</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>이름</th><th>상태</th><th>신청일</th></tr></thead>
+          <tbody id="v-list"><tr><td colspan="3" class="muted">아직 연결된 참여자가 없습니다.</td></tr></tbody>
+        </table>
+      </div>
+
+      <div class="note ok mt-32">
+        한 명도 소개하지 않아도 실패가 아닙니다. 이미 네팔 구호에 참여한 시민입니다.
+        <strong>이것이 NEPAL 48 LOVE의 가장 중요한 원칙입니다.</strong>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="legal" style="border:none;padding-top:0">
+      <p>참여금 16,000원 중 2,000원이 네팔 구호재원으로 조성되며, 참여금 전액이 기부되는 것이 아닙니다.</p>
+      <p style="margin-bottom:0">© 2026 주식회사 메타매직</p>
+    </div>
+  </div>
+</footer>
+
+<script type="module" src="/assets/js/my.js"></script>
+</body>
+</html>

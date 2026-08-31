@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>투명성 대시보드 — NEPAL 48 LOVE CHALLENGE</title>
+<meta name="description" content="검증된 데이터만 공개합니다. 참여자 수, 네팔 구호재원, 전달 현황, 기업 후원 내역." />
+<link rel="stylesheet" href="/assets/css/style.css" />
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>❤️</text></svg>" />
+</head>
+<body>
+
+<header class="site-header">
+  <div class="wrap">
+    <a class="brand" href="/"><span class="mark">48</span><span class="name">NEPAL <span>48</span> LOVE</span></a>
+    <nav class="nav">
+      <a href="/">캠페인 소개</a>
+      <a href="/#structure">참여 구조</a>
+      <a href="/my.html">내 LOVE 현황</a>
+    </nav>
+  </div>
+</header>
+
+<section>
+  <div class="wrap">
+    <div class="section-head">
+      <div class="roman">XXVI. TRANSPARENCY DASHBOARD</div>
+      <h2>검증된 데이터만 공개합니다</h2>
+      <p class="lead" id="phase-note">불러오는 중…</p>
+    </div>
+
+    <!-- 파일럿 진행률 -->
+    <div class="card pad-lg">
+      <div style="display:flex;justify-content:space-between;font-size:13.5px;font-weight:700;margin-bottom:10px;flex-wrap:wrap;gap:8px">
+        <span>1차 파일럿 목표 대비 참여</span>
+        <span class="muted" id="d-progress-label">— / 300명</span>
+      </div>
+      <div class="progress"><i id="d-progress" style="width:0%"></i></div>
+      <p class="xsmall mt-16 mb-0">
+        참여자 수는 <strong>입금이 확인된 건</strong>만 집계합니다. 신청 후 입금 대기중인 건은 별도로 표시합니다.
+      </p>
+    </div>
+
+    <!-- 핵심 지표 -->
+    <div class="grid g4 mt-24">
+      <div class="stat">
+        <div class="k">참여 확정 시민</div>
+        <div class="v love" id="d-paid">—<span class="u">명</span></div>
+        <div class="xsmall" id="d-pending">입금 대기 —명</div>
+      </div>
+      <div class="stat">
+        <div class="k">조성된 네팔 구호재원</div>
+        <div class="v" id="d-relief">—<span class="u">원</span></div>
+        <div class="xsmall">참여자 1인당 2,000원</div>
+      </div>
+      <div class="stat">
+        <div class="k">다일공동체 전달완료</div>
+        <div class="v hope" id="d-transferred">—<span class="u">원</span></div>
+        <div class="xsmall" id="d-transferred-date">—</div>
+      </div>
+      <div class="stat">
+        <div class="k">전달 예정</div>
+        <div class="v" id="d-scheduled">—<span class="u">원</span></div>
+        <div class="xsmall">정산 주기에 따라 전달</div>
+      </div>
+    </div>
+
+    <!-- LOVE 연결 -->
+    <h3 class="mt-40 mb-16">LOVE 연결 현황</h3>
+    <div class="grid g3">
+      <div class="stat"><div class="k">LOVE 4 달성자</div><div class="v love" id="d-love4">—<span class="u">명</span></div></div>
+      <div class="stat"><div class="k">LOVE 8 달성자</div><div class="v hope" id="d-love8">—<span class="u">명</span></div></div>
+      <div class="stat">
+        <div class="k">LOVE IMPACT (Attribution)</div>
+        <div class="v" id="d-impact">—<span class="u">원</span></div>
+        <div class="xsmall">총 모금액과 합산하지 않음</div>
+      </div>
+    </div>
+
+    <!-- 기업 후원 -->
+    <h3 class="mt-40 mb-16">기업 후원 현황</h3>
+    <div class="grid g2">
+      <div class="stat"><div class="k">닥터힐러 감사제품</div><div class="v" id="d-product">—<span class="u">개</span></div></div>
+      <div class="stat"><div class="k">제품지원 환산가액</div><div class="v" id="d-product-value">—<span class="u">원</span></div></div>
+    </div>
+
+    <!-- 자금 구분 -->
+    <h3 class="mt-40 mb-16">XXVII. 자금 구분 원칙</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th style="width:60px">구분</th><th>항목</th><th>설명</th></tr></thead>
+        <tbody>
+          <tr><td><strong>A</strong></td><td>구호재원</td><td>참여금 중 1인당 2,000원. 다일공동체를 통해 네팔 현장으로 전달됩니다.</td></tr>
+          <tr><td><strong>B</strong></td><td>캠페인 사업재원</td><td>운영·시스템·홍보·결제·CS·정산 비용.</td></tr>
+          <tr><td><strong>C</strong></td><td>메타매직 기업지원금</td><td>참여금과 분리된 기업 사회공헌 예산.</td></tr>
+          <tr><td><strong>D</strong></td><td>닥터힐러 제품후원</td><td>실물 감사제품. 정상 판매가 기준 환산가액으로 표시합니다.</td></tr>
+          <tr><td><strong>E</strong></td><td>추가 자발적 기부</td><td>LOVE AGAIN 등 참가자의 자발적 추가 기부.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="note mt-24">
+      <strong>혼합 광고 금지.</strong> 각 항목의 성격을 혼합하여 광고하지 않습니다.
+      “16,000원 전액 기부”와 같은 표현을 사용하지 않으며, 정확히
+      <strong>“16,000원 참여금 중 2,000원이 네팔 구호재원으로 조성됩니다”</strong>라고 안내합니다.
+    </div>
+
+    <p class="xsmall mt-24" id="d-updated">—</p>
+  </div>
+</section>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="legal" style="border:none;padding-top:0">
+      <p>이 대시보드는 실제 운영 데이터에 연결되어 있으며, 검증된 항목만 표시합니다.
+         전달완료·제품후원 등 외부 확인이 필요한 수치는 증빙 확인 후 운영자가 반영합니다.</p>
+      <p style="margin-bottom:0">© 2026 주식회사 메타매직</p>
+    </div>
+  </div>
+</footer>
+
+<script type="module" src="/assets/js/dashboard.js"></script>
+</body>
+</html>

@@ -1,0 +1,17 @@
+{
+  "name": "nepal48love",
+  "version": "0.1.0",
+  "private": true,
+  "description": "NEPAL 48 LOVE CHALLENGE — 시민참여형 네팔 긴급구호 캠페인 사이트",
+  "scripts": {
+    "dev": "wrangler pages dev public --d1=DB --local",
+    "db:create": "wrangler d1 create nepal48love",
+    "db:init": "wrangler d1 execute nepal48love --file=./schema.sql --remote",
+    "db:init:local": "wrangler d1 execute nepal48love --file=./schema.sql --local",
+    "deploy": "wrangler pages deploy public --project-name=nepal48love",
+    "check": "node scripts/check.mjs"
+  },
+  "devDependencies": {
+    "wrangler": "^4.0.0"
+  }
+}

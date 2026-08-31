@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>운영 관리 — NEPAL 48 LOVE</title>
+<meta name="robots" content="noindex, nofollow" />
+<link rel="stylesheet" href="/assets/css/style.css" />
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔒</text></svg>" />
+<style>
+  .admin-bar { background: var(--ink-900); color:#fff; padding:12px 0; font-size:13.5px; }
+  .admin-bar .wrap { display:flex; justify-content:space-between; align-items:center; gap:16px; }
+  .toolbar { display:flex; gap:10px; flex-wrap:wrap; align-items:flex-end; margin-bottom:20px; }
+  .toolbar .field { margin:0; }
+  table td .row-actions { display:flex; gap:6px; flex-wrap:wrap; }
+  .mini { padding:6px 12px; font-size:12.5px; border-radius:8px; border:1px solid var(--line);
+          background:var(--surface); cursor:pointer; font-family:inherit; font-weight:700; }
+  .mini.ok { background:var(--hope); color:#fff; border-color:var(--hope); }
+  .mini.warn { background:var(--surface-2); color:var(--ink-700); }
+</style>
+</head>
+<body>
+
+<div class="admin-bar">
+  <div class="wrap">
+    <strong>NEPAL 48 LOVE — 운영 관리</strong>
+    <span id="who" class="muted" style="color:#b9aea2">미인증</span>
+  </div>
+</div>
+
+<!-- 로그인 -->
+<section id="login" style="padding:60px 0">
+  <div class="wrap narrow">
+    <h2 class="mb-16">관리자 인증</h2>
+    <p class="small muted">Cloudflare Pages 에 <code>ADMIN_TOKEN</code> 시크릿으로 등록한 값을 입력하세요. 토큰은 이 브라우저에만 저장됩니다.</p>
+    <div class="field">
+      <label for="token">ADMIN_TOKEN</label>
+      <input type="text" id="token" autocomplete="off" />
+    </div>
+    <button class="btn btn-primary" id="login-btn">인증</button>
+    <p id="login-msg" class="small mt-16"></p>
+  </div>
+</section>
+
+<!-- 관리 화면 -->
+<main id="console" class="hidden">
+
+  <section class="tight">
+    <div class="wrap">
+      <h3 class="mb-16">현황 요약</h3>
+      <div class="grid g4" id="summary">
+        <div class="stat"><div class="k">총 신청</div><div class="v" id="s-applied">—</div></div>
+        <div class="stat"><div class="k">입금 확인</div><div class="v hope" id="s-paid">—</div></div>
+        <div class="stat"><div class="k">입금 대기</div><div class="v love" id="s-pending">—</div></div>
+        <div class="stat"><div class="k">조성 구호재원</div><div class="v" id="s-relief">—</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 참여자 관리 -->
+  <section class="tight alt">
+    <div class="wrap">
+      <h3 class="mb-16">참여자 · 입금 대조</h3>
+      <div class="toolbar">
+        <div class="field">
+          <label for="f-status">상태</label>
+          <select id="f-status">
+            <option value="pending">입금 대기</option>
+            <option value="paid">입금 확인</option>
+            <option value="cancelled">취소</option>
+            <option value="all">전체</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="f-q">검색 (이름 · 입금자명 · 연락처 · 코드)</label>
+          <input type="text" id="f-q" placeholder="홍길동" />
+        </div>
+        <button class="btn btn-ghost" id="reload" style="padding:11px 20px;font-size:14px">조회</button>
+        <a class="btn btn-ghost" id="export-p" href="#" style="padding:11px 20px;font-size:14px">CSV 내려받기</a>
+      </div>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>코드</th><th>이름</th><th>입금자명</th><th>연락처</th>
+              <th class="num">금액</th><th>추천인</th><th class="num">연결</th>
+              <th>상태</th><th>신청일</th><th>처리</th>
+            </tr>
+          </thead>
+          <tbody id="rows"><tr><td colspan="10" class="muted">조회 버튼을 눌러주세요.</td></tr></tbody>
+        </table>
+      </div>
+      <p id="rows-msg" class="small mt-16"></p>
+    </div>
+  </section>
+
+  <!-- 공개 대시보드 설정 -->
+  <section class="tight">
+    <div class="wrap narrow">
+      <h3 class="mb-16">공개 대시보드 수기 항목</h3>
+      <p class="small muted">증빙이 확인된 값만 입력하세요. 여기 입력한 값이 <a href="/dashboard.html">투명성 대시보드</a>에 그대로 공개됩니다.</p>
+
+      <div class="grid g2">
+        <div class="field">
+          <label for="set-phase">캠페인 단계</label>
+          <select id="set-phase">
+            <option value="proposal">proposal — 제안·법률검토 (신청 불가)</option>
+            <option value="waitlist">waitlist — 사전 관심등록만</option>
+            <option value="pilot">pilot — 참여 신청 오픈</option>
+            <option value="closed">closed — 파일럿 종료</option>
+          </select>
+          <p class="hint">pilot 로 바꿔야 /join.html 참여 신청이 열립니다.</p>
+        </div>
+        <div class="field">
+          <label for="set-legal">법률검토 상태</label>
+          <select id="set-legal">
+            <option value="review">review — 검토 진행중</option>
+            <option value="passed">passed — 서면 의견 수령 · 시행 가능</option>
+            <option value="modified">modified — 구조 변경 후 시행</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="set-transferred">다일공동체 전달완료 금액 (원)</label>
+          <input type="text" id="set-transferred" inputmode="numeric" />
+        </div>
+        <div class="field">
+          <label for="set-transferred-date">최근 전달일 (YYYY-MM-DD)</label>
+          <input type="text" id="set-transferred-date" placeholder="2026-10-15" />
+        </div>
+        <div class="field">
+          <label for="set-product-count">닥터힐러 감사제품 수량 (개)</label>
+          <input type="text" id="set-product-count" inputmode="numeric" />
+        </div>
+        <div class="field">
+          <label for="set-product-value">제품지원 환산가액 (원)</label>
+          <input type="text" id="set-product-value" inputmode="numeric" />
+        </div>
+      </div>
+      <button class="btn btn-primary" id="save-settings">저장</button>
+      <p id="settings-msg" class="small mt-16"></p>
+    </div>
+  </section>
+
+  <!-- 사전 관심등록 -->
+  <section class="tight alt">
+    <div class="wrap">
+      <h3 class="mb-16">사전 관심등록</h3>
+      <a class="btn btn-ghost" id="export-w" href="#" style="padding:11px 20px;font-size:14px">CSV 내려받기</a>
+    </div>
+  </section>
+
+</main>
+
+<script type="module" src="/assets/js/admin.js"></script>
+</body>
+</html>
