@@ -1,0 +1,6 @@
+# 로컬 개발용 비밀값 — 이 파일을 .dev.vars 로 복사해서 사용하세요.
+# .dev.vars 는 .gitignore 에 포함되어 있어 깃허브에 올라가지 않습니다.
+
+ADMIN_TOKEN=로컬테스트용_관리자_토큰
+HASH_SALT=로컬테스트용_긴_랜덤문자열
+TURNSTILE_SECRET=

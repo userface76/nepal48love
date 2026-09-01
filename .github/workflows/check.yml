@@ -1,0 +1,21 @@
+# 푸시할 때마다 사이트 문구 규정(기획서 Ⅴ · XII)을 자동 점검합니다.
+# 금지 표현이 들어가면 빨간 X 가 뜨므로, 배포 전에 바로 알 수 있습니다.
+name: 문구 규정 점검
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  copycheck:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: 금지/필수 표현 검사
+        run: node scripts/check.mjs
+      - name: partners.json 형식 검사
+        run: node -e "JSON.parse(require('fs').readFileSync('public/data/partners.json','utf8'))"

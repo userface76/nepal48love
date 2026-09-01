@@ -3,8 +3,9 @@
 // 사용: npm run check
 import { readdirSync, readFileSync, statSync } from 'node:fs';
 import { join, extname } from 'node:path';
+import { fileURLToPath } from 'node:url';
 
-const ROOT = new URL('..', import.meta.url).pathname;
+const ROOT = fileURLToPath(new URL('..', import.meta.url));
 const TARGET_DIR = join(ROOT, 'public');
 
 // 금지 표현 — 정규식과 설명

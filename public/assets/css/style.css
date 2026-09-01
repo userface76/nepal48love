@@ -363,3 +363,47 @@ legend { font-size: 13px; font-weight: 800; padding: 0 8px; color: var(--ink-700
   body { background: #fff; }
   section { padding: 28px 0; page-break-inside: avoid; }
 }
+
+/* ---------- 함께하는 기업 ---------- */
+.supporters { display: grid; gap: 18px; grid-template-columns: repeat(3, 1fr); }
+@media (max-width: 900px) { .supporters { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 620px) { .supporters { grid-template-columns: 1fr; } }
+
+.sup-card {
+  display: flex; flex-direction: column; gap: 14px;
+  background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius);
+  padding: 22px; text-decoration: none; color: inherit;
+  transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease;
+}
+a.sup-card:hover { transform: translateY(-3px); box-shadow: var(--shadow); border-color: var(--ink-300); }
+a.sup-card:focus-visible { outline: 2px solid var(--love); outline-offset: 3px; }
+
+.sup-logo {
+  width: 52px; height: 52px; border-radius: 12px; object-fit: contain;
+  background: var(--surface-2); border: 1px solid var(--line);
+}
+.sup-logo.initial {
+  display: grid; place-items: center;
+  font-size: 22px; font-weight: 800; color: var(--ink-300); letter-spacing: -.02em;
+}
+.sup-body { flex: 1; }
+.sup-role {
+  display: inline-block; font-size: 11.5px; font-weight: 800; letter-spacing: .1em;
+  color: var(--ink-300); text-transform: uppercase; margin-bottom: 6px;
+}
+.sup-card h3 { font-size: 17px; margin-bottom: 8px; }
+
+.sup-foot { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+.sup-badge {
+  font-size: 11.5px; font-weight: 800; letter-spacing: .04em;
+  padding: 4px 10px; border-radius: 999px; background: var(--gold-soft); color: #8a5f14;
+}
+.sup-badge.ok { background: var(--hope-soft); color: var(--hope); }
+.sup-link { font-size: 12.5px; font-weight: 700; color: var(--love); }
+.sup-link.muted { color: var(--ink-300); font-weight: 600; }
+
+.sup-card.invite { background: var(--love-soft); border-style: dashed; border-color: #eec4bf; }
+.sup-card.invite .invite-mark { background: #fff; color: var(--love); border-color: #eec4bf; }
+.sup-card.invite h3 { color: var(--love); }
+
+.supporters-note { margin-top: 18px; }
