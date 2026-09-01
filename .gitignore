@@ -22,3 +22,6 @@ Thumbs.db
 desktop.ini
 .vscode/
 .idea/
+
+# 시크릿 등록용 메모 (커밋 금지)
+secrets-*.txt
