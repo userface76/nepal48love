@@ -10,7 +10,7 @@ const STATUS_LABEL = {
 };
 
 // URL 의 code 를 미리 채워줍니다.
-const preCode = (new URLSearchParams(location.search).get('code') || '').toUpperCase();
+const preCode = (new URLSearchParams(location.search).get('code') || '').replace(/\s+/g, '');
 if (preCode) $('q-code').value = preCode;
 
 $('q-last4')?.addEventListener('input', (e) => {
@@ -22,7 +22,7 @@ $('lookup-form')?.addEventListener('submit', async (e) => {
   const msg = $('q-result');
   showMsg(msg, '');
 
-  const code = $('q-code').value.trim().toUpperCase();
+  const code = $('q-code').value.replace(/\s+/g, '');
   const last4 = $('q-last4').value.trim();
   if (!code || last4.length !== 4) {
     showMsg(msg, '추천코드와 휴대전화 뒤 4자리를 모두 입력해 주세요.', 'error');
@@ -63,7 +63,7 @@ function render(d) {
     ? `다음 단계: LOVE ${d.nextTarget} (${Math.max(d.nextTarget - paid, 0)}명 남음)`
     : 'LOVE 8 달성 🎉';
 
-  const link = `${location.origin}/join.html?ref=${d.me.code}`;
+  const link = `${location.origin}/join.html?ref=${encodeURIComponent(d.me.code)}`;
   $('v-link').value = link;
 
   const msg = $('v-copy-msg');

@@ -12,7 +12,7 @@ const $ = (id) => document.getElementById(id);
 
 // ── 추천코드 자동 입력 (?ref=CODE) ───────────────────────
 const params = new URLSearchParams(location.search);
-const refFromUrl = (params.get('ref') || '').toUpperCase().replace(/[^A-Z0-9]/g, '');
+const refFromUrl = (params.get('ref') || '').replace(/\s+/g, '');
 if (refFromUrl) {
   const el = $('a-ref');
   if (el) {
@@ -94,9 +94,9 @@ function renderDone(data) {
   $('bank-depositor').textContent = data.depositName || '—';
   $('my-code').textContent = data.code;
 
-  const link = `${location.origin}/join.html?ref=${data.code}`;
+  const link = `${location.origin}/join.html?ref=${encodeURIComponent(data.code)}`;
   $('my-link').value = link;
-  $('go-my').href = `/my.html?code=${data.code}`;
+  $('go-my').href = `/my.html?code=${encodeURIComponent(data.code)}`;
 
   const bankText =
     `[NEPAL 48 LOVE CHALLENGE 참여금 입금 안내]\n` +
@@ -126,7 +126,7 @@ function renderDone(data) {
   };
 
   // 새로고침해도 코드가 사라지지 않도록 URL 갱신
-  history.replaceState(null, '', `/join.html?done=${data.code}`);
+  history.replaceState(null, '', `/join.html?done=${encodeURIComponent(data.code)}`);
 }
 
 function escapeHtml(s) {

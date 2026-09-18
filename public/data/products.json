@@ -1,0 +1,21 @@
+{
+  "_안내": [
+    "닥터힐러 제품후원 제안 품목입니다. 이 파일만 고치면 사이트에 바로 반영됩니다.",
+    "name    제품명 (필수)",
+    "volume  용량. 예: 150ml",
+    "price   정가(원). 숫자만 적습니다. 0 이면 가격을 표시하지 않습니다",
+    "image   /assets/img/p-01.jpg 같은 이미지 경로",
+    "note    카드에 붙는 짧은 말. 없으면 비워둡니다",
+    "순서대로 화면에 나옵니다. 항목을 추가할 때 쉼표를 빠뜨리지 않도록 주의하세요."
+  ],
+  "items": [
+    { "name": "올인원 꿀벌 스킨 에센스 히알루론산", "volume": "150ml", "price": 58000, "image": "/assets/img/p-01.jpg", "note": "" },
+    { "name": "멀티 아쿠아 콜라겐 스킨 (PDRN)", "volume": "150ml", "price": 48000, "image": "/assets/img/p-02.jpg", "note": "" },
+    { "name": "끈적임 없는 티트리잎수 69% 앰플", "volume": "50ml", "price": 48000, "image": "/assets/img/p-03.jpg", "note": "" },
+    { "name": "캐모마일 꽃수 3% 이중 보습 스킨", "volume": "150ml", "price": 48000, "image": "/assets/img/p-04.jpg", "note": "" },
+    { "name": "터닝포인트 라벤더 바디 오일", "volume": "150ml", "price": 36000, "image": "/assets/img/p-05.jpg", "note": "" },
+    { "name": "터닝포인트 꿀벌 바디로션", "volume": "250ml", "price": 50000, "image": "/assets/img/p-06.jpg", "note": "" },
+    { "name": "W-스킨 파하 토너", "volume": "150ml", "price": 48000, "image": "/assets/img/p-07.jpg", "note": "" },
+    { "name": "끈적임 없는 나이아신아마이드 5% 앰플", "volume": "50ml", "price": 35000, "image": "/assets/img/p-08.jpg", "note": "" }
+  ]
+}

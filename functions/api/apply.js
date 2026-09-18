@@ -2,7 +2,7 @@
 // 신청 시점에는 status = 'pending'. 관리자가 입금을 확인하면 'paid' 로 전환됩니다.
 import {
   json, bad, clean, sha256, hashPhone, normalizePhone, isValidPhone, isValidEmail,
-  issueUniqueCode, verifyTurnstile, rateLimit, clientIp,
+  issueNameCode, normalizeCode, verifyTurnstile, rateLimit, clientIp,
   ENTRY_FEE_DEFAULT, RELIEF_DEFAULT,
 } from '../../lib/util.js';
 
@@ -38,7 +38,7 @@ export async function onRequestPost({ request, env }) {
   const phone = normalizePhone(body.phone);
   const email = clean(body.email, 80);
   const depositName = clean(body.depositName, 30) || name;
-  const referrerCodeRaw = clean(body.referrerCode, 12).toUpperCase().replace(/[^A-Z0-9]/g, '');
+  const referrerCodeRaw = normalizeCode(body.referrerCode);
 
   if (!name) return bad('이름을 입력해 주세요.');
   if (!isValidPhone(phone)) return bad('휴대전화 번호를 정확히 입력해 주세요.');
@@ -69,7 +69,7 @@ export async function onRequestPost({ request, env }) {
   let referrerName = null;
   if (referrerCodeRaw) {
     const ref = await env.DB
-      .prepare("SELECT code, name FROM participants WHERE code = ? AND status IN ('pending','paid')")
+      .prepare("SELECT code, name FROM participants WHERE code = ? COLLATE NOCASE AND status IN ('pending','paid')")
       .bind(referrerCodeRaw)
       .first();
     if (ref) {
@@ -79,21 +79,33 @@ export async function onRequestPost({ request, env }) {
   }
 
   // ── 4) 저장 ───────────────────────────────────────────
-  const code = await issueUniqueCode(env.DB);
   const entryFee = Number(env.ENTRY_FEE || ENTRY_FEE_DEFAULT);
   const relief = Number(env.RELIEF_PER_PERSON || RELIEF_DEFAULT);
 
-  await env.DB.prepare(
-    `INSERT INTO participants
-       (code, name, phone_hash, phone_enc, email, referrer_code, amount, relief_amount,
-        deposit_name, status, consent_privacy, consent_terms, consent_marketing)
-     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, 'pending', 1, 1, ?)`
-  )
-    .bind(
-      code, name, phoneHash, phone, email || null, referrerCode,
-      entryFee, relief, depositName, body.consentMarketing ? 1 : 0
-    )
-    .run();
+  // 추천코드는 본인 이름으로 만듭니다 (홍길동 · 홍길동2 …).
+  // 동명이인이 같은 순간에 신청하면 코드가 겹칠 수 있어 몇 번 다시 시도합니다.
+  let code = '';
+  for (let attempt = 0; ; attempt++) {
+    code = await issueNameCode(env.DB, name);
+    try {
+      await env.DB.prepare(
+        `INSERT INTO participants
+           (code, name, phone_hash, phone_enc, email, referrer_code, amount, relief_amount,
+            deposit_name, status, consent_privacy, consent_terms, consent_marketing)
+         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, 'pending', 1, 1, ?)`
+      )
+        .bind(
+          code, name, phoneHash, phone, email || null, referrerCode,
+          entryFee, relief, depositName, body.consentMarketing ? 1 : 0
+        )
+        .run();
+      break;
+    } catch (e) {
+      const msg = String(e?.message || e);
+      if (msg.includes('participants.code') && attempt < 4) continue;
+      throw e;
+    }
+  }
 
   // 신청 조회용 토큰 (연락처 뒤 4자리 + code 로 본인확인)
   const lookupKey = await sha256(`${code}:${phone.slice(-4)}`);

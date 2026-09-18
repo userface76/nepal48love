@@ -4,7 +4,7 @@
 -- 1) 참가자 -----------------------------------------------------------------
 CREATE TABLE IF NOT EXISTS participants (
   id              INTEGER PRIMARY KEY AUTOINCREMENT,
-  code            TEXT NOT NULL UNIQUE,          -- 본인의 LOVE 추천코드 (예: L4K9QX)
+  code            TEXT NOT NULL UNIQUE,          -- 본인의 LOVE 추천코드 = 본인 이름 (동명이인은 홍길동2)
   name            TEXT NOT NULL,
   phone_hash      TEXT NOT NULL,                 -- 연락처 해시(중복확인용)
   phone_enc       TEXT NOT NULL,                 -- 연락처(운영자 조회용, 관리자만 열람)

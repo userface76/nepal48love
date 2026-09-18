@@ -1,18 +1,18 @@
 // GET /api/status?code=XXXXXX&last4=1234 — 내 LOVE 현황
 // 추천코드 + 휴대전화 뒤 4자리로 본인 확인합니다.
-import { json, bad, clean, maskName } from '../../lib/util.js';
+import { json, bad, clean, maskName, normalizeCode } from '../../lib/util.js';
 
 export async function onRequestGet({ request, env }) {
   if (!env.DB) return bad('데이터베이스가 연결되지 않았습니다.', 500);
 
   const url = new URL(request.url);
-  const code = clean(url.searchParams.get('code'), 12).toUpperCase().replace(/[^A-Z0-9]/g, '');
+  const code = normalizeCode(url.searchParams.get('code'));
   const last4 = clean(url.searchParams.get('last4'), 4).replace(/[^0-9]/g, '');
 
   if (!code || last4.length !== 4) return bad('추천코드와 휴대전화 뒤 4자리를 입력해 주세요.');
 
   const me = await env.DB
-    .prepare('SELECT code, name, phone_enc, status, amount, relief_amount, created_at, paid_at FROM participants WHERE code = ?')
+    .prepare('SELECT code, name, phone_enc, status, amount, relief_amount, created_at, paid_at FROM participants WHERE code = ? COLLATE NOCASE')
     .bind(code)
     .first();
 
@@ -27,7 +27,7 @@ export async function onRequestGet({ request, env }) {
         WHERE referrer_code = ? AND status IN ('pending','paid')
         ORDER BY created_at ASC`
     )
-    .bind(code)
+    .bind(me.code)
     .all();
 
   const paidCount = invited.filter((r) => r.status === 'paid').length;

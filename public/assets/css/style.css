@@ -407,3 +407,167 @@ a.sup-card:focus-visible { outline: 2px solid var(--love); outline-offset: 3px; 
 .sup-card.invite h3 { color: var(--love); }
 
 .supporters-note { margin-top: 18px; }
+
+/* ---------- 챕터 넘겨보기 ---------- */
+.chapter-bar {
+  position: sticky; top: 62px; z-index: 40;
+  background: rgba(251,248,244,.92);
+  backdrop-filter: saturate(180%) blur(12px);
+  border-bottom: 1px solid var(--line);
+}
+.chapter-bar .wrap { display: flex; align-items: center; gap: 12px; padding-top: 8px; padding-bottom: 8px; }
+.chapter-chips {
+  display: flex; gap: 6px; overflow-x: auto; scrollbar-width: none;
+  flex: 1; scroll-behavior: smooth;
+}
+.chapter-chips::-webkit-scrollbar { display: none; }
+.chapter-bar .chip {
+  flex: none; display: inline-flex; align-items: center; gap: 7px;
+  border: 1px solid var(--line); background: var(--surface);
+  color: var(--ink-700); font: inherit; font-size: 13px; font-weight: 600;
+  padding: 7px 13px; border-radius: 999px; cursor: pointer; white-space: nowrap;
+  transition: background .15s, color .15s, border-color .15s;
+}
+.chapter-bar .chip:hover { border-color: var(--ink-300); }
+.chapter-bar .chip .chip-n {
+  display: grid; place-items: center; width: 18px; height: 18px; border-radius: 50%;
+  background: var(--surface-2); color: var(--ink-500); font-size: 11px; font-weight: 700;
+}
+.chapter-bar .chip.on { background: var(--ink-900); border-color: var(--ink-900); color: #fff; }
+.chapter-bar .chip.on .chip-n { background: rgba(255,255,255,.22); color: #fff; }
+.chapter-all {
+  flex: none; border: 1px solid var(--line); background: transparent;
+  color: var(--ink-500); font: inherit; font-size: 13px; font-weight: 600;
+  padding: 7px 13px; border-radius: 999px; cursor: pointer; white-space: nowrap;
+}
+.chapter-all:hover { color: var(--love); border-color: var(--love); }
+
+.chapter-pager { border-top: 1px solid var(--line); background: var(--surface-2); }
+.chapter-pager .wrap {
+  display: flex; align-items: center; justify-content: space-between; gap: 16px;
+  padding-top: 22px; padding-bottom: 22px;
+}
+.chapter-pager .pg {
+  display: flex; flex-direction: column; gap: 2px; text-align: left;
+  border: 1px solid var(--line); background: var(--surface);
+  border-radius: var(--radius); padding: 12px 18px; cursor: pointer;
+  font: inherit; color: inherit; max-width: 42%;
+}
+.chapter-pager .pg.next { text-align: right; align-items: flex-end; }
+.chapter-pager .pg:hover { border-color: var(--love); }
+.chapter-pager .pg-dir { font-size: 12px; font-weight: 700; color: var(--love); letter-spacing: .02em; }
+.chapter-pager .pg-name { font-size: 14px; font-weight: 600; color: var(--ink-700); }
+.chapter-pager .pg-count { font-size: 13px; font-weight: 700; color: var(--ink-500); flex: none; }
+
+@media (max-width: 620px) {
+  .chapter-bar .wrap { gap: 8px; }
+  .chapter-all { padding: 7px 10px; font-size: 12px; }
+  .chapter-pager .pg-name { display: none; }
+  .chapter-pager .pg { max-width: none; }
+}
+
+/* 인쇄할 때는 전부 펼쳐서 나오게 */
+@media print {
+  .chapter-bar, .chapter-pager { display: none !important; }
+  .chapter[hidden] { display: block !important; }
+}
+
+/* ---------- LOVE 감사제품 ---------- */
+.products {
+  list-style: none; margin: 0; padding: 0;
+  display: grid; gap: 18px; grid-template-columns: repeat(4, 1fr);
+}
+@media (max-width: 900px) { .products { grid-template-columns: repeat(3, 1fr); } }
+@media (max-width: 680px) { .products { grid-template-columns: repeat(2, 1fr); gap: 12px; } }
+
+.prod {
+  display: flex; flex-direction: column;
+  background: var(--surface); border: 1px solid var(--line);
+  border-radius: var(--radius); overflow: hidden;
+  transition: border-color .15s, transform .15s, box-shadow .15s;
+}
+.prod:hover { border-color: var(--ink-300); transform: translateY(-2px); box-shadow: var(--shadow); }
+
+.prod-img {
+  aspect-ratio: 1 / 1; background: var(--surface-2);
+  display: grid; place-items: center; overflow: hidden;
+}
+.prod-img img { width: 100%; height: 100%; object-fit: cover; }
+.prod-noimg { font-size: 12px; color: var(--ink-300); }
+
+.prod-body { padding: 14px 15px 16px; display: flex; flex-direction: column; gap: 6px; }
+.prod-name {
+  margin: 0; font-size: 14px; font-weight: 700; line-height: 1.45;
+  letter-spacing: -.02em; color: var(--ink-900);
+}
+.prod-meta {
+  margin: 0; display: flex; align-items: baseline; justify-content: space-between; gap: 8px;
+  font-size: 13px; color: var(--ink-500);
+}
+.prod-price { font-weight: 700; color: var(--ink-700); white-space: nowrap; }
+.prod-note { margin: 0; font-size: 12px; color: var(--ink-500); }
+
+@media print {
+  .products { grid-template-columns: repeat(4, 1fr); }
+  .prod { break-inside: avoid; }
+}
+
+/* ---------- 제품 사진 크게 보기 ---------- */
+button.prod-img {
+  position: relative; display: block; width: 100%; padding: 0; border: 0;
+  background: var(--surface-2); cursor: zoom-in; font: inherit;
+  aspect-ratio: 1 / 1; overflow: hidden;
+}
+.prod-zoom {
+  position: absolute; left: 10px; bottom: 10px;
+  background: rgba(20,17,15,.72); color: #fff;
+  font-size: 11px; font-weight: 600; letter-spacing: -.01em;
+  padding: 4px 9px; border-radius: 999px;
+  opacity: 0; transition: opacity .15s;
+}
+.prod:hover .prod-zoom, button.prod-img:focus-visible .prod-zoom { opacity: 1; }
+button.prod-img:focus-visible { outline: 2px solid var(--love); outline-offset: -2px; }
+
+body.lb-open { overflow: hidden; }
+
+.lightbox {
+  position: fixed; inset: 0; z-index: 200;
+  display: flex; align-items: center; justify-content: center; gap: 10px;
+  padding: 24px;
+  background: rgba(20,17,15,.88);
+  backdrop-filter: blur(4px);
+}
+.lightbox[hidden] { display: none; }
+
+.lb-figure {
+  margin: 0; display: flex; flex-direction: column; gap: 14px;
+  align-items: center; max-width: min(90vw, 520px);
+}
+.lb-figure img {
+  width: min(86vw, 520px); max-height: 70vh; object-fit: contain;
+  background: #fff; border-radius: var(--radius);
+}
+.lb-figure figcaption { text-align: center; color: #fff; }
+.lb-name { margin: 0; font-size: 17px; font-weight: 700; letter-spacing: -.02em; }
+.lb-meta { margin: 4px 0 0; font-size: 14px; color: rgba(255,255,255,.78); }
+.lb-count { margin: 10px 0 0; font-size: 12px; color: rgba(255,255,255,.5); letter-spacing: .06em; }
+
+.lb-close, .lb-nav {
+  flex: none; border: 1px solid rgba(255,255,255,.28); background: rgba(255,255,255,.08);
+  color: #fff; font: inherit; cursor: pointer; border-radius: 50%;
+  display: grid; place-items: center;
+}
+.lb-nav { width: 46px; height: 46px; font-size: 18px; }
+.lb-close {
+  position: absolute; top: 18px; right: 18px; width: 40px; height: 40px; font-size: 16px;
+}
+.lb-close:hover, .lb-nav:hover { background: rgba(255,255,255,.2); }
+
+@media (max-width: 620px) {
+  .lightbox { padding: 16px; gap: 4px; }
+  .lb-nav { width: 38px; height: 38px; font-size: 16px; }
+  .lb-figure img { width: 72vw; }
+  .prod-zoom { display: none; }
+}
+
+@media print { .lightbox { display: none !important; } }
