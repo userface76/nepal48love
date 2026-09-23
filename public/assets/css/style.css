@@ -409,39 +409,6 @@ a.sup-card:focus-visible { outline: 2px solid var(--love); outline-offset: 3px; 
 .supporters-note { margin-top: 18px; }
 
 /* ---------- 챕터 넘겨보기 ---------- */
-.chapter-bar {
-  position: sticky; top: 62px; z-index: 40;
-  background: rgba(251,248,244,.92);
-  backdrop-filter: saturate(180%) blur(12px);
-  border-bottom: 1px solid var(--line);
-}
-.chapter-bar .wrap { display: flex; align-items: center; gap: 12px; padding-top: 8px; padding-bottom: 8px; }
-.chapter-chips {
-  display: flex; gap: 6px; overflow-x: auto; scrollbar-width: none;
-  flex: 1; scroll-behavior: smooth;
-}
-.chapter-chips::-webkit-scrollbar { display: none; }
-.chapter-bar .chip {
-  flex: none; display: inline-flex; align-items: center; gap: 7px;
-  border: 1px solid var(--line); background: var(--surface);
-  color: var(--ink-700); font: inherit; font-size: 13px; font-weight: 600;
-  padding: 7px 13px; border-radius: 999px; cursor: pointer; white-space: nowrap;
-  transition: background .15s, color .15s, border-color .15s;
-}
-.chapter-bar .chip:hover { border-color: var(--ink-300); }
-.chapter-bar .chip .chip-n {
-  display: grid; place-items: center; width: 18px; height: 18px; border-radius: 50%;
-  background: var(--surface-2); color: var(--ink-500); font-size: 11px; font-weight: 700;
-}
-.chapter-bar .chip.on { background: var(--ink-900); border-color: var(--ink-900); color: #fff; }
-.chapter-bar .chip.on .chip-n { background: rgba(255,255,255,.22); color: #fff; }
-.chapter-all {
-  flex: none; border: 1px solid var(--line); background: transparent;
-  color: var(--ink-500); font: inherit; font-size: 13px; font-weight: 600;
-  padding: 7px 13px; border-radius: 999px; cursor: pointer; white-space: nowrap;
-}
-.chapter-all:hover { color: var(--love); border-color: var(--love); }
-
 .chapter-pager { border-top: 1px solid var(--line); background: var(--surface-2); }
 .chapter-pager .wrap {
   display: flex; align-items: center; justify-content: space-between; gap: 16px;
@@ -460,15 +427,13 @@ a.sup-card:focus-visible { outline: 2px solid var(--love); outline-offset: 3px; 
 .chapter-pager .pg-count { font-size: 13px; font-weight: 700; color: var(--ink-500); flex: none; }
 
 @media (max-width: 620px) {
-  .chapter-bar .wrap { gap: 8px; }
-  .chapter-all { padding: 7px 10px; font-size: 12px; }
   .chapter-pager .pg-name { display: none; }
   .chapter-pager .pg { max-width: none; }
 }
 
 /* 인쇄할 때는 전부 펼쳐서 나오게 */
 @media print {
-  .chapter-bar, .chapter-pager { display: none !important; }
+  .chapter-pager { display: none !important; }
   .chapter[hidden] { display: block !important; }
 }
 

@@ -1,7 +1,6 @@
 // 제안서 챕터 나누기.
-// 처음 들어오면 전체 페이지가 그대로 쭉 나옵니다.
-// 위쪽 목차나 상단 메뉴에서 한 곳을 누르면 그 챕터만 따로 보이고,
-// "전체 보기" 를 누르면 다시 전체 페이지로 돌아옵니다.
+// 페이지를 열면 1번 챕터만 보입니다. 맨 아래 이전/다음 버튼이나 ← → 키로 넘깁니다.
+// 상단 메뉴의 #링크를 누르면 그 내용이 들어 있는 챕터로 바로 넘어갑니다.
 // 챕터를 바꾸고 싶으면 아래 GROUPS 의 label(이름)과 n(그 챕터에 들어갈 섹션 개수)만 고치면 됩니다.
 // n 을 모두 더한 값이 페이지의 섹션 개수와 같아야 합니다.
 
@@ -9,8 +8,8 @@
   const GROUPS = [
     { label: '표지 · 사업개요', n: 2 },
     { label: 'LOVE 감사제품', n: 1 },
-    { label: 'Ⅱ·Ⅲ 배경과 목적', n: 2 },
-    { label: 'Ⅴ 참여 구조', n: 2 },
+    { label: '배경과 목적', n: 2 },
+    { label: '참여 구조', n: 2 },
     { label: '커뮤니케이션 원칙', n: 2 },
     { label: '파트너십 · 함께하는 기업', n: 3 },
     { label: '파일럿 · 성공 기준', n: 2 },
@@ -39,57 +38,28 @@
   }
   if (chapters.length < 2) return;
 
-  // ── 2) 위쪽 목차 ─────────────────────────────────────
-  const bar = document.createElement('nav');
-  bar.className = 'chapter-bar';
-  bar.setAttribute('aria-label', '제안서 목차');
-  bar.innerHTML =
-    '<div class="wrap">' +
-    '<div class="chapter-chips">' +
-    chapters
-      .map((c, i) => `<button type="button" class="chip" data-go="${i}" title="이 챕터만 보기">
-          <span class="chip-n">${i + 1}</span>${c.label}</button>`)
-      .join('') +
-    '</div>' +
-    '<button type="button" class="chapter-all" id="ch-all">전체 보기</button>' +
-    '</div>';
-  const header = document.querySelector('.site-header');
-  header.parentNode.insertBefore(bar, header.nextSibling);
-
-  // ── 3) 아래쪽 이전/다음 ───────────────────────────────
+  // ── 2) 아래쪽 이전/다음 ───────────────────────────────
   const pager = document.createElement('div');
   pager.className = 'chapter-pager';
   pager.innerHTML =
     '<div class="wrap">' +
-    '<button type="button" class="pg prev" data-step="-1"><span class="pg-dir">← 이전</span><span class="pg-name"></span></button>' +
+    '<button type="button" class="pg prev"><span class="pg-dir">← 이전</span><span class="pg-name"></span></button>' +
     '<div class="pg-count"></div>' +
-    '<button type="button" class="pg next" data-step="1"><span class="pg-dir">다음 →</span><span class="pg-name"></span></button>' +
+    '<button type="button" class="pg next"><span class="pg-dir">다음 →</span><span class="pg-name"></span></button>' +
     '</div>';
-  chapters[chapters.length - 1].el.parentNode.insertBefore(
-    pager,
-    chapters[chapters.length - 1].el.nextSibling
-  );
+  const last = chapters[chapters.length - 1].el;
+  last.parentNode.insertBefore(pager, last.nextSibling);
 
-  const chips = Array.from(bar.querySelectorAll('.chip'));
   const prevBtn = pager.querySelector('.prev');
   const nextBtn = pager.querySelector('.next');
   const countEl = pager.querySelector('.pg-count');
-  const allBtn = bar.querySelector('#ch-all');
 
   let current = 0;
-  let showAll = true;   // 처음에는 전체 페이지
 
-  // ── 4) 챕터 전환 ─────────────────────────────────────
+  // ── 3) 챕터 전환 ─────────────────────────────────────
   function render() {
-    document.body.classList.toggle('ch-all-on', showAll);
-    chapters.forEach((c, i) => { c.el.hidden = !showAll && i !== current; });
-    chips.forEach((b, i) => {
-      const on = !showAll && i === current;
-      b.classList.toggle('on', on);
-      b.setAttribute('aria-current', on ? 'true' : 'false');
-    });
+    chapters.forEach((c, i) => { c.el.hidden = i !== current; });
 
-    pager.hidden = showAll;
     const p = chapters[current - 1];
     const n = chapters[current + 1];
     prevBtn.hidden = !p;
@@ -97,23 +67,17 @@
     if (p) prevBtn.querySelector('.pg-name').textContent = p.label;
     if (n) nextBtn.querySelector('.pg-name').textContent = n.label;
     countEl.textContent = `${current + 1} / ${chapters.length}`;
-
-    const chip = chips[current];
-    if (chip && !showAll) chip.scrollIntoView({ block: 'nearest', inline: 'center' });
-    allBtn.textContent = showAll ? '한 챕터씩 보기' : '전체 보기';
   }
 
   function go(i, opts = {}) {
     const next = Math.max(0, Math.min(chapters.length - 1, i));
-    const moved = next !== current || showAll;
+    const moved = next !== current;
     current = next;
-    showAll = false;
     render();
     if (opts.scrollTo) {
-      opts.scrollTo.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      opts.scrollTo.scrollIntoView({ behavior: opts.instant ? 'auto' : 'smooth', block: 'start' });
     } else if (moved) {
-      const top = bar.getBoundingClientRect().top + window.scrollY - 62;
-      window.scrollTo({ top: Math.max(0, top), behavior: opts.instant ? 'auto' : 'smooth' });
+      window.scrollTo({ top: 0, behavior: opts.instant ? 'auto' : 'smooth' });
     }
     if (!opts.keepHash) history.replaceState(null, '', `#ch${current + 1}`);
   }
@@ -124,15 +88,9 @@
     return -1;
   }
 
-  // ── 5) 조작 ─────────────────────────────────────────
-  chips.forEach((b) => b.addEventListener('click', () => go(Number(b.dataset.go))));
+  // ── 4) 조작 ─────────────────────────────────────────
   prevBtn.addEventListener('click', () => go(current - 1));
   nextBtn.addEventListener('click', () => go(current + 1));
-  allBtn.addEventListener('click', () => {
-    showAll = !showAll;
-    render();
-    if (showAll) window.scrollTo({ top: 0, behavior: 'smooth' });
-  });
 
   // 페이지 안의 #링크 — 그 내용이 있는 챕터로 넘어간 뒤 그 자리로 이동
   document.addEventListener('click', (e) => {
@@ -149,9 +107,8 @@
     history.replaceState(null, '', `#${id}`);
   });
 
-  // ← → 키로 넘기기 (전체 페이지로 보는 중이거나 입력칸에 타이핑 중일 때는 빼고)
+  // ← → 키로 넘기기 (입력칸에 타이핑 중이거나 사진을 크게 보는 중일 때는 빼고)
   document.addEventListener('keydown', (e) => {
-    if (showAll) return;
     if (document.body.classList.contains('lb-open')) return;  // 사진 크게 보는 중
     if (e.metaKey || e.ctrlKey || e.altKey) return;
     const t = e.target;
@@ -160,10 +117,10 @@
     if (e.key === 'ArrowLeft') go(current - 1);
   });
 
-  // ── 6) 첫 화면 — 주소의 #에 맞춰 연다 ──────────────────
+  // ── 5) 첫 화면 — 주소의 #에 맞춰 연다 ──────────────────
   function openFromHash(instant) {
     const raw = decodeURIComponent(location.hash.slice(1));
-    if (!raw) { showAll = true; current = 0; render(); return; }   // 주소에 아무것도 없으면 전체 페이지
+    if (!raw) return go(0, { instant: true, keepHash: true });   // 주소에 아무것도 없으면 1번 챕터
     const m = raw.match(/^ch(\d+)$/i);
     if (m) return go(Number(m[1]) - 1, { instant: true, keepHash: true });
     const target = document.getElementById(raw);
